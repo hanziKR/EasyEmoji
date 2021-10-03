@@ -1,55 +1,4 @@
-﻿//#include <Windows.h>
-//#include <iostream>
-//#include <string>
-//#include <fstream>
-//#include <codecvt>
-//
-//
-//#include "resource.h"
-//
-//wchar_t list[9][40] = {};
-//
-//
-//using namespace std;
-//
-//
-
-//int WINAPI WinMain(
-//    _In_ HINSTANCE hInstance,
-//    _In_opt_ HINSTANCE hPrevInstance,
-//    _In_ LPSTR lpCmdLine,
-//    _In_ int nShowCmd) {
-//    codecvt_utf8<wchar_t>* converter = new codecvt_utf8<wchar_t>;
-//
-//    wcout.imbue(locale(locale::empty(), converter));
-//
-//    wifstream s("emoji.txt");
-//    s.imbue(locale(locale::empty(), converter));
-//
-//    wstring line;
-//    while (getline(s, line)) {
-//        wcout << line << endl;
-//    }
-//
-//    if (!RegisterHotKey(NULL, 1, MOD_ALT | MOD_NOREPEAT, 'Q'));
-//    MSG msg = { 0 };
-//    while (GetMessage(&msg, NULL, 0, 0) != 0)
-//    {
-//        if (msg.message == WM_HOTKEY)
-//        {
-//            printf("WM_HOTKEY received\n");
-//        }
-//    }
-//
-//    delete converter;
-//
-//    return TRUE;
-//}
-//int main() {
-//    return WinMain(0, 0, 0, 0);
-//}
-#include <Windows.h>
-#include <iostream>
+﻿#include <Windows.h>
 #include <locale>
 #include <codecvt>
 #include <string>
@@ -216,20 +165,16 @@ int WINAPI WinMain(
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd) {
-    //ShowDesktop();
     const codecvt_utf8<wchar_t>* converter = new codecvt_utf8<wchar_t>;
     const locale utf8_locale = locale(locale::empty(), converter);
 
     wifstream stream(L"emoji.txt");
     stream.imbue(utf8_locale);
-    wcout.imbue(utf8_locale);
 
     wstring line;
     while (getline(stream, line)) {
         emojis.push_back(line);
     }
-
-    //wcout << line << endl;
     
     RegisterHotKey(NULL, 1, MOD_CONTROL | MOD_NOREPEAT, VK_OEM_PERIOD);
 
@@ -237,13 +182,10 @@ int WINAPI WinMain(
 
     while (GetMessage(&msg, NULL, 0, 0) != 0) {
         if (msg.message == WM_HOTKEY) {
-            //SendString(line.c_str(), line.length());
-            //makeInput(line);
             int i = DialogBox(0, MAKEINTRESOURCE(IDD_DIALOG), 0, (DLGPROC)DialogProc);
             if (i != -1) {
                 makeInput(emojis[i]);
             }
-            //MessageBox(0, emojis[i].c_str(), L"", 0);
         }
     }
 
